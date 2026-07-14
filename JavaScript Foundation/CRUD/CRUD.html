@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <!-- create, update, delete -->
+        <!-- Form Creation-->
+
+        <section>
+            <form action="">
+                <label for="image">Image</label> <br>
+                <input type="file" name="image" id="image"> <br>
+                <!-- title -->
+                <label for="titleInput">Title : </label> <br>
+                <input type="text" id="title" name="title"> <br>
+                <!-- discription -->
+                <label for="discription">description : </label> <br>
+                <input type="text" name="description" id="description"> <br>
+                <!-- categories -->
+                <label for="categories">Categories</label> <br>
+                <input list="categories-opt"> <br>
+                <datalist id="categories-opt">
+                    <option value=""></option>
+                </datalist>
+                <button class="submit">Submit</button>
+            </form>
+        </section>
+
+    <script src="crud.js"></script>
+</body>
+</html>
