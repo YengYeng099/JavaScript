@@ -2,7 +2,7 @@ const formdata = document.querySelector('form');
 formdata.addEventListener('submit',(event)=>{
     event.preventDefault(); 
     const title = document.getElementById('title').value;
-    const discription = document.getElementById('description');
+    const description = document.getElementById('description').value;
     const fileInput = document.getElementById('image');
     const formData = new FormData();
     formData.append("file", fileInput.files[0])
@@ -19,15 +19,16 @@ formdata.addEventListener('submit',(event)=>{
     }
     uploadFile().then(
         data => {
-            console.log("Location image : ", location.image);
+            console.log("Location image : ", data?.location);
             const createProductFn = async () => {
-                const response = await fetch(" https://fakestoreapi.com/products", {
+                const response = await fetch("https://fakestoreapi.com/products", {
                 method: "POST",
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     title: title,
-                    discription: description,
+                    description: description,
                     image: data?.location,
-                  }),
+                    }),
                 });
             const product = await response.json();
             console.log(product);
