@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Por Express — Shipment Console</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Roboto:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Link your compiled Tailwind stylesheet here (path depends on your project setup) -->
+<link rel="stylesheet" href="../src/output.css">
+
+<style>
+  body { font-family: 'Roboto', sans-serif; }
+  .font-display { font-family: 'Space Grotesk', sans-serif; }
+  .font-mono { font-family: 'IBM Plex Mono', monospace; }
+</style>
+</head>
+<body class="bg-[#FAFAF9] text-[#14242E] min-h-screen">
+
+  <!-- Header -->
+  <header class="border-b border-[#E5E5E5] bg-white sticky top-0 z-10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-md bg-[#1D3D50] flex items-center justify-center text-white font-display font-semibold text-sm">PX</div>
+        <div>
+          <p class="font-display font-semibold text-lg leading-none">Por Express</p>
+          <p class="text-xs text-[#6B7280] font-mono mt-1 tracking-wide">SHIPMENT CONSOLE</p>
+        </div>
+      </div>
+      <div class="hidden sm:flex items-center gap-2 text-xs font-mono text-[#6B7280]">
+        <span id="shipmentCount">0</span>
+        <span>shipments tracked</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-[360px_1fr] gap-8 items-start">
+
+    <!-- Form Panel -->
+    <aside class="bg-white border border-[#E5E5E5] rounded-lg p-6 lg:sticky lg:top-24">
+      <div class="flex items-center justify-between mb-1">
+        <h2 id="formTitle" class="font-display font-semibold text-base">Create Shipment</h2>
+        <span id="editingBadge" class="hidden text-[10px] font-mono uppercase tracking-wide bg-[#E8A33D]/15 text-[#8A5A15] px-2 py-1 rounded">Editing</span>
+      </div>
+      <p class="text-xs text-[#6B7280] mb-5">Fill in the details below to add a shipment to the console.</p>
+
+      <form id="shipmentForm" class="space-y-4">
+        <input type="hidden" id="shipmentId">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-[#6B7280] mb-1" for="sender">Sender</label>
+            <input required id="sender" name="sender" type="text" placeholder="Name"
+              class="w-full text-sm border border-[#E5E5E5] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#6B7280] mb-1" for="receiver">Receiver</label>
+            <input required id="receiver" name="receiver" type="text" placeholder="Name"
+              class="w-full text-sm border border-[#E5E5E5] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-[#6B7280] mb-1" for="origin">Origin</label>
+            <input required id="origin" name="origin" type="text" placeholder="Phnom Penh"
+              class="w-full text-sm border border-[#E5E5E5] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#6B7280] mb-1" for="destination">Destination</label>
+            <input required id="destination" name="destination" type="text" placeholder="Siem Reap"
+              class="w-full text-sm border border-[#E5E5E5] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-medium text-[#6B7280] mb-1" for="weight">Weight (kg)</label>
+            <input required id="weight" name="weight" type="number" min="0.1" step="0.1" placeholder="4.5"
+              class="w-full text-sm font-mono border border-[#E5E5E5] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[#6B7280] mb-1" for="status">Status</label>
+            <select id="status" name="status"
+              class="w-full text-sm border border-[#E5E5E5] rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+              <option value="pending">Pending</option>
+              <option value="transit">In Transit</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex gap-2 pt-2">
+          <button type="submit" id="submitBtn"
+            class="flex-1 bg-[#1D3D50] text-white text-sm font-medium px-4 py-2.5 rounded-md hover:bg-[#16303F] transition">
+            Save Shipment
+          </button>
+          <button type="button" id="cancelEditBtn"
+            class="hidden text-sm font-medium px-4 py-2.5 rounded-md border border-[#E5E5E5] text-[#6B7280] hover:bg-[#FAFAF9] transition">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </aside>
+
+    <!-- Table Panel -->
+    <section class="bg-white border border-[#E5E5E5] rounded-lg overflow-hidden">
+      <div class="px-6 py-4 border-b border-[#E5E5E5] flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+        <h2 class="font-display font-semibold text-base">Shipments</h2>
+        <div class="flex gap-2">
+          <input id="searchInput" type="text" placeholder="Search sender, receiver, tracking ID…"
+            class="text-sm border border-[#E5E5E5] rounded-md px-3 py-1.5 w-56 focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+          <select id="statusFilter"
+            class="text-sm border border-[#E5E5E5] rounded-md px-2 py-1.5 bg-white focus:outline-none focus:ring-2 focus:ring-[#1D3D50]/30 focus:border-[#1D3D50]">
+            <option value="all">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="transit">In Transit</option>
+            <option value="delivered">Delivered</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="text-left text-xs text-[#6B7280] uppercase tracking-wide border-b border-[#E5E5E5]">
+              <th class="px-6 py-3 font-mono font-medium">Tracking ID</th>
+              <th class="px-6 py-3 font-medium">Route</th>
+              <th class="px-6 py-3 font-medium">Sender / Receiver</th>
+              <th class="px-6 py-3 font-medium">Weight</th>
+              <th class="px-6 py-3 font-medium">Progress</th>
+              <th class="px-6 py-3 font-medium text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="shipmentTableBody" class="divide-y divide-[#E5E5E5]"></tbody>
+        </table>
+      </div>
+
+      <div id="emptyState" class="hidden flex-col items-center justify-center text-center py-16 px-6">
+        <p class="font-display font-semibold text-sm mb-1">No shipments yet</p>
+        <p class="text-xs text-[#6B7280]">Create your first shipment on the left to see it tracked here.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="crud.js" defer></script>
+</body>
+</html>
