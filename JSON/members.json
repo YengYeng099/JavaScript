@@ -1,0 +1,47 @@
+[
+    {
+        "name" : "Chhun Hokchheng",
+        "Age" : 19,
+        "Position" : "Front-End Developer",
+        "Salery" : 1000,
+        "TODO" : [
+            "Build Company new UI"
+        ]
+    },
+    {
+        "name": "San SengThanu",
+        "Age": 19,
+        "Position": "Video Specialist",
+        "Salery": 1200,
+        "TODO": [
+            "Make Video For Final Reviews"
+        ]   
+    },
+    {
+        "name": "Men Senghak",
+        "Age": 19,
+        "Position": "Back-End Developer",
+        "Salery": 1300,
+        "TODO" : [
+            "Create a new PostgreSQL Key"
+        ]
+    },
+    {
+        "name": "Leang Seavminh",
+        "Age": 19,
+        "Position": "API Specialist",
+        "Salery": 1400,
+        "TODO" : [
+            "Connect new Front-End to new PostgreSQL Backend Key"
+        ]
+    },
+    {
+        "name": "Ratana Oudom",
+        "Age": 19,
+        "Position": "Senior Software Engineer",
+        "Salery": 2000,
+        "TODO" : [
+            "Aura Farming"
+        ]
+    }
+]
